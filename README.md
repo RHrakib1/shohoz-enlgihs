@@ -1,4 +1,4 @@
-# ENGLISH <img width="25px" src="./assets/logo.png" /> JANALA
+# SHOHOZ <img width="25px" src="./assets/logo.png" /> ENGLISH
 
 ---
 
