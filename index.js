@@ -5,12 +5,23 @@ const loadLessons = () => {
         .then(data => displaylessons(data.data))
 }
 
+const removebtnstyle = () => {
+    const lessonsbutton = document.querySelectorAll(".lesson-btn")
+    lessonsbutton.forEach(removebtn => {
+        removebtn.classList.remove("active")
+    })
+}
+
 const loadlevelword = (id) => {
     const url = `https://openapi.programming-hero.com/api/level/${id}`
     fetch(url)
         .then(res => res.json())
-        .then(data => displaylevelone(data.data))
-
+        .then(data => {
+            removebtnstyle()
+            const clickbtn = document.getElementById(`lessonbtn-${id}`);
+            clickbtn.classList.add("active");
+            displaylevelone(data.data);
+        })
 }
 const displaylevelone = (words) => {
     const wordcontianer = document.getElementById('word-contianer')
@@ -37,7 +48,7 @@ const displaylevelone = (words) => {
             <p class="font-semibold">Meaning /Pronounciation</p>
             <div class="font-medium text-xl font-bangla">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "pronunciation পাওয়া যায়নি"}"</div>
             <div class="flex justify-between items-center">
-                <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
+                <button onclick="my_modal_5.showModal()" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
                         class="fa-solid fa-circle-info text-[#374957]"></i></button>
                 <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
                         class="fa-solid fa-volume-high text-[#374957]"></i></button>
@@ -59,7 +70,7 @@ const displaylessons = (lessons) => {
         // create element
         const btndiv = document.createElement("div");
         btndiv.innerHTML = `
-<button onclick="loadlevelword(${lesson.level_no})" class='btn btn-outline btn-primary '><i class="fa-brands fa-leanpub"></i> Lesson - ${lesson.level_no}</button>
+<button id="lessonbtn-${lesson.level_no}" onclick="loadlevelword(${lesson.level_no})" class='btn btn-outline btn-primary lesson-btn'><i class="fa-brands fa-leanpub"></i> Lesson - ${lesson.level_no}</button>
 `
         levelContainer.append(btndiv)
     }
