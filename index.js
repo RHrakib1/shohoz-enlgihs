@@ -1,3 +1,8 @@
+const createElement = (arr) => {
+    const htmlelement = arr.map(a => `<span class="btn">${a}</span>`)
+    return (htmlelement.join(""));
+}
+
 const loadLessons = () => {
     const url = 'https://openapi.programming-hero.com/api/levels/all'
     fetch(url)
@@ -22,6 +27,36 @@ const loadlevelword = (id) => {
             clickbtn.classList.add("active");
             displaylevelone(data.data);
         })
+}
+
+const loadworddetails = (id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayworddetails(data.data))
+}
+
+
+const displayworddetails = (detailsword) => {
+    const detailscontainer = document.getElementById("details-container")
+    detailscontainer.innerHTML = `
+    <div class="">
+                    <h2 class="font-bold text-2xl">${detailsword.word} ( <i class="fa-solid fa-microphone-lines"></i> :${detailsword.pronunciation})</h2>
+                </div>
+                <div class="">
+                    <h2 class="font-bold">Meaning</h2>
+                    <p class="font-bangla"> ${detailsword.meaning}</p>
+                </div>
+                <div class="">
+                    <h2 class="font-bold">Example</h2>
+                    <p>${detailsword.sentence}</p>
+                </div>
+                <div class="">
+                   ${createElement(detailsword.synonyms)}
+                </div>
+               `
+    console.log('akhn agula dd krb', detailsword);
+    document.getElementById('my_modal_5').showModal()
 }
 const displaylevelone = (words) => {
     const wordcontianer = document.getElementById('word-contianer')
@@ -48,7 +83,7 @@ const displaylevelone = (words) => {
             <p class="font-semibold">Meaning /Pronounciation</p>
             <div class="font-medium text-xl font-bangla">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "pronunciation পাওয়া যায়নি"}"</div>
             <div class="flex justify-between items-center">
-                <button onclick="my_modal_5.showModal()" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
+                <button onclick="loadworddetails(${word.id})" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
                         class="fa-solid fa-circle-info text-[#374957]"></i></button>
                 <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
                         class="fa-solid fa-volume-high text-[#374957]"></i></button>
