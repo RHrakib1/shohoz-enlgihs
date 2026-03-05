@@ -2,6 +2,11 @@ const createElement = (arr) => {
     const htmlelement = arr.map(a => `<span class="btn space-x-3">${a}</span>`)
     return (htmlelement.join(""));
 }
+function pronounceWord(word) {
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = "en-EN"; // English
+    window.speechSynthesis.speak(utterance);
+}
 const managespiner = (status) => {
     if (status == true) {
         document.getElementById("sppiner").classList.remove('hidden');
@@ -97,7 +102,7 @@ const displaylevelone = (words) => {
             <div class="flex justify-between items-center">
                 <button onclick="loadworddetails(${word.id})" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
                         class="fa-solid fa-circle-info text-[#374957]"></i></button>
-                <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
+                <button onclick="pronounceWord('${word.word}')"  class="btn bg-[#1A91FF10] hover:bg-[#1A91FF60]"><i
                         class="fa-solid fa-volume-high text-[#374957]"></i></button>
             </div>
         </div>
@@ -127,6 +132,7 @@ const displaylessons = (lessons) => {
 loadLessons()
 
 document.getElementById("btn-search").addEventListener("click", () => {
+    removebtnstyle()
     const input = document.getElementById("input-search")
     const inputvalue = input.value.trim().toLowerCase();
     console.log(inputvalue);
@@ -140,4 +146,10 @@ document.getElementById("btn-search").addEventListener("click", () => {
             displaylevelone(filterWords);
         });
 
-})
+
+});
+document.getElementById("input-search").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        document.getElementById("btn-search").click();
+    }
+});
